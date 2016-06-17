@@ -14,7 +14,11 @@ class Slack2Particle < Sinatra::Base
       '{ "text": "Sorry: User not authorized." }'
       exit
     end
-    #HTTParty.post(ENV['PARTICLE_API_ENDPOINT'], body: {access_token: "#{ENV['PARTICLE_SECRET_TOKEN']}", params: 'on'})
-    '{ "text": "The door has been unlocked." }'
+    response = HTTParty.post(ENV['PARTICLE_API_ENDPOINT'], body: {access_token: "#{ENV['PARTICLE_SECRET_TOKEN']}", params: 'on'})
+    if response.code == 200
+      '{ "text": "The door has been unlocked." }'
+    else
+      '{ "text": "Error: Particle API request failed." }'
+    end
   end
 end
